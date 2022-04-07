@@ -1,0 +1,11 @@
+[package]
+name = "loader"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+flate2 = "1.0"
+reqwest = "0.11.10"
+chrono = { version = "0.4.19", features = ["serde"] }
