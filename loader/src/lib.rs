@@ -1,7 +1,7 @@
-#![feature(const_fn_trait_bound)]
-
 use std::{
+    collections::hash_map::DefaultHasher,
     fs,
+    hash::{Hash, Hasher},
     io::{self, Read, Write},
     path::PathBuf,
 };
@@ -28,7 +28,7 @@ pub enum Fill {
 
 pub struct Pixel {
     pub timestamp: DateTime<Utc>,
-    pub user_hash: String,
+    pub user_id: u64,
     pub color: [u8; 3],
     pub fill: Fill,
 }
@@ -94,7 +94,10 @@ where
         );
 
         let (user_hash, rest) = rest.split_once(',')?;
-        let user_hash = user_hash.to_string();
+
+        let mut hasher = &mut DefaultHasher::new();
+        user_hash.hash(&mut hasher);
+        let user_id = hasher.finish();
 
         let (color, fill) = rest.split_once(',')?;
         let color = [
@@ -123,7 +126,7 @@ where
 
         Some(Pixel {
             timestamp,
-            user_hash,
+            user_id,
             color,
             fill,
         })
