@@ -51,6 +51,9 @@ where
     let data = if let Some(dir) = dir {
         // If file is in the specified directory, load it.
         let dir = PathBuf::from(dir);
+
+        fs::create_dir_all(&dir).map_err(Error::Io)?;
+
         let file_path = dir.join(format!("canvas_{:#02}.csv.gzip", num));
         println!("Trying to load file {}.", num);
         match fs::read(&file_path) {
